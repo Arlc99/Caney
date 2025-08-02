@@ -1,0 +1,166 @@
+@import url('https://fonts.googleapis.com/css2?family=Libertinus+Sans:ital,wght@0,400;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Libertinus+Sans:ital,wght@0,400;0,700;1,400&family=Oswald:wght@200..700&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/*modificamos la barra de navegacion*/
+  .navbar-nav .nav-link {
+  color: white; /* Color inicial del texto */
+  transition: color 0.3s, border-bottom 0.3s;
+  position: relative;
+  padding-bottom: 5px;
+  margin-left: 10px;
+
+}
+ .navbar-nav .nav-link i {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 35px; /* Tamaño del icono */
+}
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip-text {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  bottom: 130%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #8B5E3C;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  z-index: 1000;
+  transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+
+
+.navbar-nav .nav-link:hover {
+  color: #fae5d2; /* Café claro al pasar el mouse */
+  border-bottom: 2px solid #9eaa7c; /* Línea inferior al hacer hover */
+  border-radius: 5px;
+  padding: 10px;
+  text-shadow: 5px 5px 10px rgba(255, 255, 255, 0.2); /* Sombra al hacer hover */
+  background-color: #242221;
+  margin: 3px ; /* Espacio entre los enlaces */
+}
+.navbar-brand img{
+  width: 400px; /* Ajusta el tamaño de la imagen del logo */
+  height: auto; /* Mantiene la proporción de la imagen */
+  border-radius: 50%; /* Hace que la imagen sea circular */
+}
+
+/*creamos la portada de la pagina*/
+.portada{
+      background-color: #8B5E3C;/* Café claro a gris oscuro */
+    padding: 20px;
+    color: white;
+    color: white; /* Para que el texto se lea bien */
+    
+    
+}
+/*contendor de la imagen*/
+.portada .img{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+   background-color: #8B5E3C;;
+  border-radius: 50%;
+  padding: 10px;
+}
+
+/*imagen*/
+.portada .img img{
+  width: 100%;
+  height: auto;
+  border-radius: 50%;
+}
+.formulario {
+    background-color: #3a2a1a;
+    padding: 2rem;
+    border-radius: 8px;
+    color: white;
+  }
+  
+  .form-control {
+    background-color: #553924;
+    border: none;
+    color: white;
+    padding: 20px;
+  }
+  
+  .form-control:focus {
+    background-color: #553924;
+    color: white;
+    box-shadow: 0 0 0 0.25rem rgba(223, 38, 13, 0.25);
+  }
+  
+  .input-group {
+    margin-bottom: 1rem;
+  }
+  
+  .input-group .form-control {
+    border-top: 1px solid #553924;
+  }
+  
+  .input-group .form-control:hover {
+    border-color: #df260d;
+    background-color: #816a4f;
+    cursor: pointer;
+  }
+  
+  .btn-primary {
+    background-color: #df260d;
+    border: none;
+    font-weight: 500;
+  }
+  
+  .btn-primary:hover {
+    background-color: #b81e0a;
+  }
+  
+  .redes-sociales i {
+    color: white;
+    transition: all 0.3s;
+    font-size: 30px; /* Tamaño del icono */
+  }
+  
+  .redes-sociales a:hover i {
+    color: #df260d;
+    transform: scale(1.2);
+  }
+.text{
+    font-family: 'bold',sans-serif;
+    font-size: 1.2rem;
+    color: #f0e6d2; /* Color del texto */
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    
+}
+@media(max-width:798px){
+ .navbar-brand img{
+  width: 200px; /* Ajusta el tamaño de la imagen del logo */
+  height: auto; /* Mantiene la proporción de la imagen */
+  border-radius: 50%; /* Hace que la imagen sea circular */
+}
+}

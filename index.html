@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="estilos.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="header">
+      <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+        <div class="container-fluid navegacion">
+          <a class="navbar-brand" href="#"
+            ><img src="img/logo_png.png" alt="Logo Caney Llanero"
+          /></a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav mx-auto">
+              <a class="nav-link fs-3" aria-current="page" href="#">
+                <i class="fas fa-calendar-check"></i>
+              </a>
+              <a class="nav-link fs-4" href="#">
+                <i class="fas fa-utensils"></i
+              ></a>
+              <a class="nav-link fs-4" href="#">
+                <i class="fas fa-map-marker-alt"></i
+              ></a>
+              <a class="nav-link fs-4" aria-disabled="true">
+                <i class="fas fa-envelope"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
+    <section class="inicio">
+      <div class="row portada">
+        <div class="col-md-6 img">
+          <img src="img/mesero.png" />
+        </div>
+        <div class="col-md-6 formulario">
+          <form class="reservacion needs-validation" novalidate>
+            <div class="mb-4">
+              <h2 class="text-center">Reservaciones</h2>
+            </div>
+
+            <div class="mb-3 input-group">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Nombre"
+                required
+              />
+              <div class="invalid-feedback">Por favor ingresa tu nombre</div>
+            </div>
+
+            <div class="mb-3 input-group">
+              <input
+                type="tel"
+                class="form-control"
+                placeholder="Número celular"
+                required
+              />
+              <div class="invalid-feedback">
+                Por favor ingresa tu número de celular
+              </div>
+            </div>
+
+            <div class="mb-3 input-group">
+              <input type="date" class="form-control" required />
+              <div class="invalid-feedback">Por favor selecciona una fecha</div>
+            </div>
+
+            <div class="mb-3 input-group">
+              <select class="form-control" required>
+                <option value="" disabled selected>Motivo de la reserva</option>
+                <option>Cumpleaños</option>
+                <option>Aniversario</option>
+                <option>Reunión familiar</option>
+                <option>Evento corporativo</option>
+              </select>
+              <div class="invalid-feedback">Por favor selecciona un motivo</div>
+            </div>
+
+            <div class="mb-4">
+              <button type="submit" class="btn btn-primary w-100 py-2">
+                Enviar reservación
+              </button>
+            </div>
+            <!-- Redes sociales -->
+          <div class="redes-sociales text-center">
+            <a
+              href="https://facebook.com"
+              target="_blank"
+              class="text-decoration-none mx-2"
+            >
+              <i class="fab fa-facebook-f fa-lg"></i>
+            </a>
+            <a
+              href="https://instagram.com"
+              target="_blank"
+              class="text-decoration-none mx-2"
+            >
+              <i class="fab fa-instagram fa-lg"></i>
+            </a>
+            <a
+              href="https://wa.me/1234567890"
+              target="_blank"
+              class="text-decoration-none mx-2"
+            >
+              <i class="fab fa-whatsapp fa-lg"></i>
+            </a>
+            <p class="text">siguenos por nuestras redes-sociales</p>
+          </div>
+          </form>
+          
+        </div>
+      </div>
+    </section>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
