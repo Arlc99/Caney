@@ -5,7 +5,12 @@ const cors = require('cors');
 const app = express();
 
 // Middlewares esenciales (¡No olvides estos!)
-app.use(cors()); // Habilita CORS
+// Configuración CORS más específica
+app.use(cors({
+  origin: 'http://localhost:5500', // Asegúrate que coincida con tu puerto frontend
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type']
+})); // Habilita CORS
 app.use(express.json()); // Para parsear JSON
 
 // Conexión a MongoDB con manejo de errores mejorado
