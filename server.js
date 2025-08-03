@@ -14,7 +14,7 @@ app.use(cors({
 app.use(express.json()); // Para parsear JSON
 
 // Conexión a MongoDB con manejo de errores mejorado
-mongoose.connect('mongodb://localhost:27017/caney', {
+mongoose.connect('mongodb+srv://camilo313464:oDe5c403xO0ESwap@cluster0.mongodb.net/caney', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
