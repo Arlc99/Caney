@@ -1,52 +1,53 @@
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('formReserva');
+  const loadingIndicator = document.getElementById('loading');
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-
-    // Obtener valores de los campos
-    const nombre = document.getElementById('nombre').value.trim();
-    const celular = document.getElementById('celular').value.trim();
-    const fecha = document.getElementById('fecha').value;
-    const motivo = document.getElementById('motivo').value;
-
-    // Validación frontend
-    if (!nombre || !celular || !fecha || !motivo) {
-      alert('Por favor complete todos los campos');
-      return;
-    }
-
-    // Crear objeto de reserva
-    const reserva = {
-      nombre,
-      celular,
-      fecha,
-      motivo
-    };
-
-    console.log('Enviando reserva:', reserva); // Para depuración
+    
+    // Mostrar indicador de carga
+    loadingIndicator.style.display = 'block';
+    form.querySelector('button[type="submit"]').disabled = true;
 
     try {
+      const reserva = {
+        nombre: document.getElementById('nombre').value.trim(),
+        celular: document.getElementById('celular').value.trim(),
+        fecha: document.getElementById('fecha').value,
+        motivo: document.getElementById('motivo').value
+      };
+
+      // Validación frontend
+      if (!reserva.nombre || !reserva.celular || !reserva.fecha || !reserva.motivo) {
+        throw new Error('Por favor complete todos los campos');
+      }
+
       const response = await fetch('https://caney.onrender.com/api/reservas', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json'
         },
         body: JSON.stringify(reserva)
       });
 
-      // Manejar respuesta
+      const data = await response.json();
+
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Error en la solicitud');
+        throw new Error(data.error || 'Error al procesar la reserva');
       }
 
-      const data = await response.json();
-      alert(`✅ ${data.message}`);
+      // Éxito
+      alert(`✅ ${data.message}\nNúmero de reserva: ${data.data.id}`);
       form.reset();
+
     } catch (error) {
-      console.error('Error al enviar reserva:', error);
-      alert(`❌ Error: ${error.message}`);
+      console.error('Error:', error);
+      alert(`❌ ${error.message}`);
+    } finally {
+      // Ocultar indicador de carga
+      loadingIndicator.style.display = 'none';
+      form.querySelector('button[type="submit"]').disabled = false;
     }
   });
 });
