@@ -1,28 +1,23 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const cors = require('cors');
+
 
 const app = express();
 
 // Middlewares esenciales (¡No olvides estos!)
 // Configuración CORS más específica
+// Ejemplo en Express (Node.js)
+const cors = require("cors");
 app.use(cors({
- origin: '*', // Asegúrate que coincida con tu puerto frontend
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type']
-})); // Habilita CORS
-app.use(express.json()); // Para parsear JSON
+  origin: ["https://tufrontend-netlify.com", "http://localhost:3000"] // Permitir Netlify y localhost
+})); // Para parsear JSON
 
 // Conexión a MongoDB con manejo de errores mejorado
-mongoose.connect('mongodb+srv://camilo313464:oDe5c403xO0ESwap@cluster0.mongodb.net/caney', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-.then(() => console.log('✅ Conectado a MongoDB'))
-.catch(err => {
-  console.error('❌ Error de conexión a MongoDB:', err);
-  process.exit(1); // Sale si no puede conectar
-});
+const uri = "mongodb+srv://camilo313464:oDe5c403xO0ESwap@cluster0.gjecgds.mongodb.net/Caney?retryWrites=true&w=majority";
+
+mongoose.connect(uri)
+  .then(() => console.log("✅ Conectado a MongoDB Atlas"))
+  .catch(err => console.error("❌ Error de conexión a MongoDB:", err));
 
 // Modelo de Reserva
 const Reserva = mongoose.model('Reserva', {
