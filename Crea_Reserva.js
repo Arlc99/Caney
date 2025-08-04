@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
     
    
-    form.querySelector('button[type="submit"]').disabled = true;
+   
 
     try {
       const reserva = {
@@ -44,9 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
       console.error('Error:', error);
       alert(`❌ ${error.message}`);
     } finally {
-      // Ocultar indicador de carga
-      loadingIndicator.style.display = 'none';
-      form.querySelector('button[type="submit"]').disabled = false;
+      
     }
   });
 });
