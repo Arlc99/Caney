@@ -1,78 +1,111 @@
+require('dotenv').config(); // Añade esto al inicio
 const express = require('express');
 const mongoose = require('mongoose');
-
+const cors = require('cors');
 
 const app = express();
 
-// Middlewares esenciales (¡No olvides estos!)
-// Configuración CORS más específica
-// Ejemplo en Express (Node.js)
-const cors = require("cors");
-app.use(cors({
-  origin: ["https://tufrontend-netlify.com", "http://localhost:3000"] // Permitir Netlify y localhost
-})); // Para parsear JSON
+// Configuración CORS más segura
+const allowedOrigins = [
+  'https://tufrontend.netlify.app',
+  'http://localhost:5173'
+];
 
-// Conexión a MongoDB con manejo de errores mejorado
-const uri = "mongodb+srv://camilo313464:oDe5c403xO0ESwap@cluster0.gjecgds.mongodb.net/Caney?retryWrites=true&w=majority";
+app.use(cors({
+  origin: allowedOrigins,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
+
+app.use(express.json()); // ¡IMPORTANTE! Para parsear JSON
+
+// Conexión a MongoDB (usa variables de entorno)
+const uri = process.env.MONGO_URI || " mongodb+srv://camilo313464:oDe5c403xO0ESwap@cluster0.gjecgds.mongodb.net/Caney?retryWrites=true&w=majoritymon";
 
 mongoose.connect(uri)
-  .then(() => console.log("✅ Conectado a MongoDB Atlas"))
-  .catch(err => console.error("❌ Error de conexión a MongoDB:", err));
+  .then(() => console.log("✅ Conectado a MongoDB"))
+  .catch(err => {
+    console.error("❌ Error de conexión a MongoDB:", err);
+    process.exit(1); // Sale si no puede conectar
+  });
 
-// Modelo de Reserva
-const Reserva = mongoose.model('Reserva', {
-  nombre: String,
-  celular: String,
-  fecha: Date,
-  motivo: String
+// Modelo de Reserva mejorado
+const reservaSchema = new mongoose.Schema({
+  nombre: { type: String, required: true },
+  celular: { type: String, required: true },
+  fecha: { type: Date, required: true },
+  motivo: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now }
 });
 
-// ¡RUTA CORREGIDA! - Asegúrate que coincida exactamente con el frontend
+const Reserva = mongoose.model('Reserva', reservaSchema);
+
+// Ruta POST mejorada
 app.post('/api/reservas', async (req, res) => {
-  console.log('Recibida petición POST a /api/reservas'); // Log para depuración
-  console.log("se ejecuto post");
+  console.log('Body recibido:', req.body);
   
   try {
     const { nombre, celular, fecha, motivo } = req.body;
-    
-    // Validación básica
+
+    // Validación mejorada
     if (!nombre || !celular || !fecha || !motivo) {
-      return res.status(400).json({ error: 'Faltan campos requeridos' });
+      return res.status(400).json({ 
+        success: false,
+        error: 'Todos los campos son requeridos' 
+      });
     }
 
-    const reserva = new Reserva({ nombre, celular, fecha: new Date(fecha), motivo });
+    // Manejo seguro de fechas
+    const fechaReserva = new Date(fecha);
+    if (isNaN(fechaReserva.getTime())) {
+      return res.status(400).json({
+        success: false,
+        error: 'Formato de fecha inválido'
+      });
+    }
+
+    const reserva = new Reserva({ 
+      nombre, 
+      celular, 
+      fecha: fechaReserva, 
+      motivo 
+    });
+
     await reserva.save();
     
     res.status(201).json({
       success: true,
-      message: 'Reserva creada exitosamente',
       data: reserva
     });
+
   } catch (error) {
-    console.error('Error al crear reserva:', error);
+    console.error('Error:', error);
     res.status(500).json({
       success: false,
-      error: 'Error interno del servidor'
+      error: 'Error al procesar la reserva'
     });
   }
 });
 
-// Ruta GET para probar
+// Ruta GET con paginación
 app.get('/api/reservas', async (req, res) => {
   try {
-    const reservas = await Reserva.find();
-    res.json(reservas);
+    const reservas = await Reserva.find().sort({ createdAt: -1 });
+    res.json({
+      success: true,
+      count: reservas.length,
+      data: reservas
+    });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ 
+      success: false,
+      error: error.message 
+    });
   }
 });
 
-// Ruta de prueba básica
-app.get('/', (req, res) => {
-  res.send('Servidor de reservas funcionando');
-});
-
-const PORT = 3000;
+// Puerto configurable
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Servidor escuchando en http://localhost:${PORT}`);
+  console.log(`🚀 Servidor listo en http://localhost:${PORT}`);
 });
