@@ -5,52 +5,31 @@ const cors = require('cors');
 
 const app = express();
 
-// Configuración CORS para producción
-const allowedOrigins = [
-  'https://spontaneous-klepon-02dce0.netlify.app/', // Reemplaza con tu URL real de Netlify
-  'mongodb+srv://camilo313464:oDe5c403xO0ESwap@cluster0.gjecgds.mongodb.net/Caney?retryWrites=true&w=majority'           // Para desarrollo local
-];
-
+// Configura CORS solo para tu frontend de Netlify
 app.use(cors({
-  origin: function (origin, callback) {
-    // Permitir solicitudes sin origen (como aplicaciones móviles o curl)
-    if (!origin) return callback(null, true);
-    
-    if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = `Origen ${origin} no permitido por CORS`;
-      return callback(new Error(msg), false);
-    }
-    return callback(null, true);
-  },
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true,
-  allowedHeaders: ['Content-Type', 'Authorization']
+  origin: 'https://spontaneous-klepon-02dce0.netlify.app',
+  methods: ['GET', 'POST', 'PUT', 'DELETE']
 }));
 
 app.use(express.json());
 
-// Conexión segura a MongoDB
+// Conexión a MongoDB Atlas (usa variables de entorno)
 const uri = process.env.MONGO_URI;
-if (!uri) {
-  console.error("❌ ERROR: MONGO_URI no está definida en .env");
-  process.exit(1);
-}
-
-mongoose.connect(uri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  serverSelectionTimeoutMS: 5000
-})
-.then(() => console.log("✅ Conectado a MongoDB Atlas"))
-.catch(err => {
-  console.error("❌ Error de conexión a MongoDB:", err.message);
-  process.exit(1);
+mongoose.connect(uri, { 
+  useNewUrlParser: true, 
+  useUnifiedTopology: true 
 });
 
-// Modelo y rutas (igual que en tu código original)
-// ... [mantén tus modelos y rutas actuales]
+// Ruta de ejemplo para crear datos
+app.post('/api/posts', async (req, res) => {
+  try {
+    const newPost = await Post.create(req.body); // Asumiendo que tienes un modelo Post
+    res.status(201).json(newPost);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
 
+// Inicia el servidor
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`🚀 Servidor listo en puerto ${PORT}`);
-});
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
