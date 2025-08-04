@@ -1,111 +1,56 @@
-require('dotenv').config(); // Añade esto al inicio
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
 const app = express();
 
-// Configuración CORS más segura
+// Configuración CORS para producción
 const allowedOrigins = [
-  'https://tufrontend.netlify.app',
-  'http://localhost:5173'
+  'https://spontaneous-klepon-02dce0.netlify.app/', // Reemplaza con tu URL real de Netlify
+  'http://localhost:5173'           // Para desarrollo local
 ];
 
 app.use(cors({
-  origin: allowedOrigins,
+  origin: function (origin, callback) {
+    // Permitir solicitudes sin origen (como aplicaciones móviles o curl)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = `Origen ${origin} no permitido por CORS`;
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-app.use(express.json()); // ¡IMPORTANTE! Para parsear JSON
+app.use(express.json());
 
-// Conexión a MongoDB (usa variables de entorno)
-const uri = process.env.MONGO_URI || " mongodb+srv://camilo313464:oDe5c403xO0ESwap@cluster0.gjecgds.mongodb.net/Caney?retryWrites=true&w=majoritymon";
+// Conexión segura a MongoDB
+const uri = process.env.MONGO_URI;
+if (!uri) {
+  console.error("❌ ERROR: MONGO_URI no está definida en .env");
+  process.exit(1);
+}
 
-mongoose.connect(uri)
-  .then(() => console.log("✅ Conectado a MongoDB"))
-  .catch(err => {
-    console.error("❌ Error de conexión a MongoDB:", err);
-    process.exit(1); // Sale si no puede conectar
-  });
-
-// Modelo de Reserva mejorado
-const reservaSchema = new mongoose.Schema({
-  nombre: { type: String, required: true },
-  celular: { type: String, required: true },
-  fecha: { type: Date, required: true },
-  motivo: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now }
+mongoose.connect(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  serverSelectionTimeoutMS: 5000
+})
+.then(() => console.log("✅ Conectado a MongoDB Atlas"))
+.catch(err => {
+  console.error("❌ Error de conexión a MongoDB:", err.message);
+  process.exit(1);
 });
 
-const Reserva = mongoose.model('Reserva', reservaSchema);
+// Modelo y rutas (igual que en tu código original)
+// ... [mantén tus modelos y rutas actuales]
 
-// Ruta POST mejorada
-app.post('/api/reservas', async (req, res) => {
-  console.log('Body recibido:', req.body);
-  
-  try {
-    const { nombre, celular, fecha, motivo } = req.body;
-
-    // Validación mejorada
-    if (!nombre || !celular || !fecha || !motivo) {
-      return res.status(400).json({ 
-        success: false,
-        error: 'Todos los campos son requeridos' 
-      });
-    }
-
-    // Manejo seguro de fechas
-    const fechaReserva = new Date(fecha);
-    if (isNaN(fechaReserva.getTime())) {
-      return res.status(400).json({
-        success: false,
-        error: 'Formato de fecha inválido'
-      });
-    }
-
-    const reserva = new Reserva({ 
-      nombre, 
-      celular, 
-      fecha: fechaReserva, 
-      motivo 
-    });
-
-    await reserva.save();
-    
-    res.status(201).json({
-      success: true,
-      data: reserva
-    });
-
-  } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Error al procesar la reserva'
-    });
-  }
-});
-
-// Ruta GET con paginación
-app.get('/api/reservas', async (req, res) => {
-  try {
-    const reservas = await Reserva.find().sort({ createdAt: -1 });
-    res.json({
-      success: true,
-      count: reservas.length,
-      data: reservas
-    });
-  } catch (error) {
-    res.status(500).json({ 
-      success: false,
-      error: error.message 
-    });
-  }
-});
-
-// Puerto configurable
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`🚀 Servidor listo en http://localhost:${PORT}`);
+  console.log(`🚀 Servidor listo en puerto ${PORT}`);
 });
