@@ -35,6 +35,7 @@ const Reserva = mongoose.model('Reserva', {
 // ¡RUTA CORREGIDA! - Asegúrate que coincida exactamente con el frontend
 app.post('/api/reservas', async (req, res) => {
   console.log('Recibida petición POST a /api/reservas'); // Log para depuración
+  console.log("se ejecuto post");
   
   try {
     const { nombre, celular, fecha, motivo } = req.body;
