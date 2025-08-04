@@ -5,8 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     
-    // Mostrar indicador de carga
-    loadingIndicator.style.display = 'block';
+   
     form.querySelector('button[type="submit"]').disabled = true;
 
     try {
