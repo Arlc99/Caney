@@ -8,7 +8,7 @@ const app = express();
 // Configuración CORS para producción
 const allowedOrigins = [
   'https://spontaneous-klepon-02dce0.netlify.app/', // Reemplaza con tu URL real de Netlify
-  'http://localhost:5173'           // Para desarrollo local
+  'mongodb+srv://camilo313464:oDe5c403xO0ESwap@cluster0.gjecgds.mongodb.net/Caney?retryWrites=true&w=majority'           // Para desarrollo local
 ];
 
 app.use(cors({
