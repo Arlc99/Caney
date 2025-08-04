@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('Enviando reserva:', reserva); // Para depuración
 
     try {
-      const response = await fetch('http://localhost:3000/api/reservas', {
+      const response = await fetch('https://caney.onrender.com/api/reservas', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
